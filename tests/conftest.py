@@ -4,6 +4,7 @@ from appium import webdriver
 from selene import browser
 from dotenv import load_dotenv
 from config import Config, to_driver_options
+from utils.allure_attach import attach_bstack_video
 
 
 def pytest_addoption(parser):
@@ -71,3 +72,10 @@ def mobile_management(config_instance, context):
 
     # Закрываем сессию после теста
     browser.quit()
+
+    if context == 'bstack' and config_instance.bstack_username:
+        attach_bstack_video(
+            session_id=session_id,
+            bstack_username=config_instance.bstack_username,
+            bstack_access_key=config_instance.bstack_access_key
+        )
